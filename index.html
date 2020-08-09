@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Boolzap Vue</title>
+</head>
+<body>
+  <div id="app">
+    <!-- BACKGROUND -->
+    <div id="top-background" class="background"></div>
+    <div id="bottom-background" class="background"></div>
+    <!-- LETTORE -->
+    <div id="player">
+      <!-- SEZIONE DI SINISTRA (CONTATTI) -->
+      <div id="contatti">
+        <div id="header-contatti" class="flex">
+          <div id="immagine-profilo" class="avatar"></div>
+          <div class="icons">
+            <i class="fas fa-circle-notch"></i>
+            <i class="fas fa-comment-alt"></i>
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </div>
+        <div id="notifiche-contatti" class="flex">
+          <div id="bell-wrapper">
+            <i class="fas fa-bell-slash"></i>
+          </div>
+          <div id="testo-notifiche">
+            <p>Ricevi notifiche di nuovi messaggi</p>
+            <a href="#">Attiva notifiche desktop</a>
+          </div>
+        </div>
+        <div id="cerca-contatti" class="flex">
+          <i class="fas fa-search"></i>
+          <input v-on:keyup="searchContacts" type="text" name="search" value="" placeholder="Cerca o inizia una nuova chat" v-model="contactSearch">
+        </div>
+        <div id="lista-contatti">
+          <div v-for="(contact, index) in contacts" v-if="contact.visible" class="contatto" @click="makeActive(index)">
+            <img class="avatar" v-bind:src="'img/' + contact.image" alt="contact image">
+            <div class="info-contatto">
+              <div class="nome-contatto">{{contact.name}}</div>
+              <div class="frase-contatto">{{contact.phrase}}</div>
+            </div>
+            <time>{{contact.time}}</time>
+          </div>
+        </div>
+      </div>
+      <!-- SEZIONE DI DESTRA (CHAT) -->
+      <div id="chat">
+        <div id="chat-header" class="flex">
+          <div id="foto-contatto" class="avatar contatto-1"></div>
+          <div class="info-contatto">
+            <div class="nome-contatto">Michele</div>
+            <div class="frase-contatto">Ultimo accesso oggi alle 15:40</div>
+          </div>
+          <div class="icons">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-paperclip"></i>
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </div>
+        <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="contact.active">
+          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByIndex = i" @mouseout="showByIndex = null">{{message.text}}<i class="fas fa-chevron-down" v-show="showByIndex === i"></i><time>{{message.time}}</time></span>
+
+        </div>
+        <div id="chat-footer" class="flex">
+          <i class="far fa-smile"></i>
+          <input type="text" name="" value="" placeholder="Scrivi un messaggio">
+          <i class="fas fa-microphone"></i>
+        </div>
+      </div>
+    </div>
+  <!-- TEMPLATE -->
+    <div id="template" class="display-none">
+      <span class="user message"><time></time></span>
+      <span class="contact message"><time></time></span>
+      <i class="fas fa-chevron-down"></i>
+      <div class="message-menu">
+        <p class="message-info">info messaggio</p>
+        <p class="delete-message">cancella messaggio</p>
+      </div>
+    </div>
+  </div>
+  <script src="js/script.js" charset="utf-8"></script>
+</body>
+</html>
