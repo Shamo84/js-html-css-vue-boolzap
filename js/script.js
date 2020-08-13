@@ -387,11 +387,6 @@ var app = new Vue(
         }
         this.contacts[index].active = true;
       },
-      mouseOut(index){
-        if (this.showByClick != index) {
-          this.showByHover = null;
-        }
-      }
     }
 
   })

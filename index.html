@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="contact.active">
-          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="mouseOut(i)" >{{message.text}}
+          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="showByHover = null" >{{message.text}}
             <i class="fas fa-chevron-down" v-show="showByHover === i || showByClick === i" @click="showByClick = i"></i>
             <div class="message-menu" v-show="showByClick === i">
               <p class="message-info">info messaggio</p>
