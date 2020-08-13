@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <title>Boolzap Vue</title>
 </head>
@@ -47,7 +48,7 @@
               <div class="nome-contatto">{{contact.name}}</div>
               <div class="frase-contatto">{{contact.phrase}}</div>
             </div>
-            <time>{{contact.time}}</time>
+            <time>{{contact.lastContact}}</time>
           </div>
         </div>
       </div>
@@ -66,8 +67,14 @@
           </div>
         </div>
         <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="contact.active">
-          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByIndex = i" @mouseout="showByIndex = null">{{message.text}}<i class="fas fa-chevron-down" v-show="showByIndex === i"></i><time>{{message.time}}</time></span>
-
+          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="mouseOut(i)" >{{message.text}}
+            <i class="fas fa-chevron-down" v-show="showByHover === i || showByClick === i" @click="showByClick = i"></i>
+            <div class="message-menu" v-show="showByClick === i">
+              <p class="message-info">info messaggio</p>
+              <p class="delete-message">cancella messaggio</p>
+            </div>
+            <time>{{message.time}}</time>
+          </span>
         </div>
         <div id="chat-footer" class="flex">
           <i class="far fa-smile"></i>

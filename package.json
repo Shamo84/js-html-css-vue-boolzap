@@ -1,0 +1,22 @@
+{
+  "name": "js-html-css-vue-boolzap",
+  "version": "1.0.0",
+  "description": "js-html-css-boolzap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shamo84/js-html-css-vue-boolzap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shamo84/js-html-css-vue-boolzap/issues"
+  },
+  "homepage": "https://github.com/Shamo84/js-html-css-vue-boolzap#readme",
+  "dependencies": {
+    "moment": "^2.27.0"
+  }
+}
