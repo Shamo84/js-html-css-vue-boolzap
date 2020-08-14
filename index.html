@@ -12,7 +12,7 @@
   <title>Boolzap Vue</title>
 </head>
 <body>
-  <div id="app">
+  <div id="app" @click="showByClick = null">
     <!-- BACKGROUND -->
     <div id="top-background" class="background"></div>
     <div id="bottom-background" class="background"></div>
@@ -39,10 +39,10 @@
         </div>
         <div id="cerca-contatti" class="flex">
           <i class="fas fa-search"></i>
-          <input v-on:keyup="searchContacts" type="text" name="search" value="" placeholder="Cerca o inizia una nuova chat" v-model="contactSearch">
+          <input v-on:keyup="searchContacts" type="text" name="search" value="" placeholder="Cerca o inizia una nuova chat" v-model="contactSearchInput">
         </div>
         <div id="lista-contatti">
-          <div v-for="(contact, index) in contacts" v-if="contact.visible" class="contatto" @click="makeActive(index)">
+          <div v-for="(contact, index) in contacts" v-if="contact.visible" class="contatto" @click="activeContact = index">
             <img class="avatar" v-bind:src="'img/' + contact.image" alt="contact image">
             <div class="info-contatto">
               <div class="nome-contatto">{{contact.name}}</div>
@@ -66,31 +66,22 @@
             <i class="fas fa-ellipsis-v"></i>
           </div>
         </div>
-        <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="contact.active">
+        <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="activeContact == index">
           <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="showByHover = null" >{{message.text}}
-            <i class="fas fa-chevron-down" v-show="showByHover === i || showByClick === i" @click="showByClick = i"></i>
-            <div class="message-menu" v-show="showByClick === i">
+            <i class="fas fa-chevron-down" v-show="showByHover == i || showByClick == i" @click="openPopup(i)"></i>
+            <div class="message-menu" v-show="showByClick == i">
               <p class="message-info">info messaggio</p>
               <p class="delete-message">cancella messaggio</p>
             </div>
-            <time>{{message.time}}</time>
+            <time>{{message.time.format("kk:mm")}}</time>
           </span>
         </div>
         <div id="chat-footer" class="flex">
           <i class="far fa-smile"></i>
-          <input type="text" name="" value="" placeholder="Scrivi un messaggio">
-          <i class="fas fa-microphone"></i>
+          <input type="text" name="" value="" placeholder="Scrivi un messaggio" v-on:keyup="chatInputF($event)" v-model="chatInput">
+          <i class="fas fa-microphone" v-if="chatInput.trim() == ''"></i>
+          <i class="fas fa-paper-plane" v-else></i>
         </div>
-      </div>
-    </div>
-  <!-- TEMPLATE -->
-    <div id="template" class="display-none">
-      <span class="user message"><time></time></span>
-      <span class="contact message"><time></time></span>
-      <i class="fas fa-chevron-down"></i>
-      <div class="message-menu">
-        <p class="message-info">info messaggio</p>
-        <p class="delete-message">cancella messaggio</p>
       </div>
     </div>
   </div>

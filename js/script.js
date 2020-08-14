@@ -1,27 +1,4 @@
-//   //  APRE IL MESSAGE MENU QUANDO CLIKKI LA FRECCIA E LO CHIUDE QUANDO CLIKKI FUORI
-//   $(document).on('click', function(event) {
-//     // SE C'è UN DROPDOWN APERTO
-//     console.log($(event.target));
-//     if ($(".chat-main.active").find("div").hasClass("message-menu")) {
-//       if ($(event.target).hasClass("message-menu")) {
-//       } else if ($(event.target).hasClass('message-info')) {
-//       } else if ($(event.target).hasClass("delete-message")) {
-//         $(event.target).parents(".message").remove();
-//         var newTime = $(".chat-main.active").children("span:last-child").children("time").text();
-//         $(".contatto.active").children("time").text(newTime);
-//         riordinaContatti(newTime);
-//       } else if ($(event.target).hasClass("message") && ($(event.target).find("div").hasClass("message-menu")) || $(event.target).prop("localName") == "time") {
-//         $(".chat-main.active .message-menu").remove();
-//       } else {
-//         $(".chat-main.active .message-menu").remove();
-//         $(".chat-main.active .fa-chevron-down").remove();
-//       }
-//     } else {
-//       // SE NON C'è UN DROPDOWN GIà APERTO, PUOI APRIRLO
-//       if ($(event.target).hasClass('fa-chevron-down')) {
-//         var messageMenuClone = $("#template .message-menu").clone();
-//         messageMenuClone.prependTo($(event.target).parent("span"));
-//
+
 //         var positionTop = $(event.target).parent(".message").position().top;
 //         // SE IL DROPDOWN SBORDA ABBASSA UN PO LA SCROLL BAR
 //         if (positionTop > $(".chat-main.active").height() + 10) {
@@ -149,81 +126,82 @@
 //   $(".contatto.active").appendTo("#lista-contatti");
 //   return;
 // }
-
+Vue.config.devtools = true;
 var app = new Vue(
   {
     el: '#app',
     data: {
+      activeContact: 0,
       showByHover: null,
       showByClick: null,
-      contactSearch: "",
+      contactSearchInput: "",
+      chatInput: "",
       contacts: [
         {
           name: "Michele",
-          phrase: "viva la vita",
-          lastContact: "20:27",
+          phrase: "viva la vida loca",
+          lastContact: null,
           image: "avatar_1.jpg",
           visible: true,
-          active: true,
           chat: [
             {
               text: "ciao michele!",
-              time: moment('13-08-2020 20:15:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:15:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('13-08-2020 20:15:20', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:15:20', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
             {
               text: "come stai?",
-              time: moment('13-08-2020 20:16:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:16:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "tutto bene grazie e tu?",
-              time: moment('13-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
             {
               text: "beh, si va avanti..",
-              time: moment('13-08-2020 20:17:30', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:17:30', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "sempre problemi eh?",
-              time: moment('13-08-2020 20:18:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:18:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
             {
               text: "eh sì, è la vita!",
-              time: moment('13-08-2020 20:18:30', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:18:30', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "come ti capisco..",
-              time: moment('13-08-2020 20:19:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:19:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
             {
               text: "pensa che ieri ho giocato 700€ alle macchinette",
-              time: moment('13-08-2020 20:20:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:20:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "e hai vinto qualcosa?",
-              time: moment('13-08-2020 20:25:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:25:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
             {
               text: "ma figurati!",
-              time: moment('13-08-2020 20:27:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:27:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: ":D",
-              time: moment('13-08-2020 20:27:30', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('13-08-2020 20:27:30', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
           ]
@@ -231,19 +209,18 @@ var app = new Vue(
         {
           name: "Fabio",
           phrase: "bevo il latte",
-          lastContact: "Yesterday",
+          lastContact: null,
           image: "avatar_2.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao fabio!",
-              time: moment('12-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('12-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('12-08-2020 20:18:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('12-08-2020 20:18:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
           ]
@@ -251,19 +228,18 @@ var app = new Vue(
         {
           name: "Samuele",
           phrase: "W il rock n' roll",
-          lastContact: moment('10-08-2020 15:18:00', "DD-MM-YYYY hh:mm:ss").format("dddd"),
+          lastContact: null,
           image: "avatar_3.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao samu",
-              time: moment('10-08-2020 15:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('10-08-2020 15:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('10-08-2020 15:18:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('10-08-2020 15:18:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             },
           ]
@@ -271,19 +247,18 @@ var app = new Vue(
         {
           name: "Alessandro B",
           phrase: "gioco alla play",
-          lastContact: moment('09-08-2020 10:17:00', "DD-MM-YYYY hh:mm:ss").format("dddd"),
+          lastContact: null,
           image: "avatar_4.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao alex",
-              time: moment('09-08-2020 10:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('09-08-2020 10:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('09-08-2020 10:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('09-08-2020 10:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             }
           ]
@@ -291,19 +266,18 @@ var app = new Vue(
         {
           name: "Alessandro L.",
           phrase: "guardo la tele",
-          lastContact: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss").format("dddd"),
+          lastContact: null,
           image: "avatar_5.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao alessandro",
-              time: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             }
           ]
@@ -311,19 +285,18 @@ var app = new Vue(
         {
           name: "Claudia",
           phrase: "rockin' it",
-          lastContact: moment('06-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("D/M/YYYY"),
+          lastContact: null,
           image: "avatar_6.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao cara",
-              time: moment('06-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('06-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao carissima",
-              time: moment('06-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('06-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             }
           ]
@@ -331,19 +304,18 @@ var app = new Vue(
         {
           name: "Davide",
           phrase: "federer vs djokovic",
-          lastContact: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("D/M/YYYY"),
+          lastContact: null,
           image: "avatar_7.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao davide!",
-              time: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             }
           ]
@@ -351,19 +323,18 @@ var app = new Vue(
         {
           name: "Federico",
           phrase: "ballando sotto le stelle",
-          lastContact: moment('01-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("D/M/YYYY"),
+          lastContact: null,
           image: "avatar_8.jpg",
           visible: true,
-          active: false,
           chat: [
             {
               text: "ciao fede!",
-              time: moment('01-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('01-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
             {
               text: "ciao cara",
-              time: moment('01-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss").format("kk:mm"),
+              time: moment('01-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             }
           ]
@@ -373,7 +344,7 @@ var app = new Vue(
     methods: {
       searchContacts(){
         for (var i = 0; i < this.contacts.length; i++) {
-          var ricerca = this.contactSearch.toLowerCase().trim();
+          var ricerca = this.contactSearchInput.toLowerCase().trim();
           if (!this.contacts[i].name.toLowerCase().search(ricerca)) {
             this.contacts[i].visible = true;
           } else {
@@ -381,12 +352,29 @@ var app = new Vue(
           }
         }
       },
-      makeActive(index){
-        for (var i = 0; i < this.contacts.length; i++) {
-          this.contacts[i].active = false;
-        }
-        this.contacts[index].active = true;
+      openPopup(i){
+        setTimeout(() => this.showByClick = i, 1);
       },
+      chatInputF(event){
+        if (event.keyCode == 13 && this.chatInput.trim() != '') {
+
+        }
+      },
+      updateTimes(){
+        for (var i = 0; i < this.contacts.length; i++) {
+          var lastMessage = this.contacts[i].chat.length-1;
+          if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 24 ) {
+            this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("kk:mm");
+          } else if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 168 ) {
+            this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("dddd");
+          } else {
+            this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("D/M/YYYY");
+          }
+        }
+      },
+    },
+    mounted() {
+      this.updateTimes();
     }
 
   })
