@@ -55,10 +55,10 @@
       <!-- SEZIONE DI DESTRA (CHAT) -->
       <div id="chat">
         <div id="chat-header" class="flex">
-          <div id="foto-contatto" class="avatar contatto-1"></div>
+          <img class="avatar" v-bind:src="'img/' + contacts[activeContact].image" alt="contact image">
           <div class="info-contatto">
-            <div class="nome-contatto">Michele</div>
-            <div class="frase-contatto">Ultimo accesso oggi alle 15:40</div>
+            <div class="nome-contatto">{{contacts[activeContact].name}}</div>
+            <div class="frase-contatto">Ultimo accesso oggi alle <time>{{contacts[activeContact].chat[contacts[activeContact].chat.length-1].time.format("kk:mm")}}</time></div>
           </div>
           <div class="icons">
             <i class="fas fa-search"></i>
@@ -80,7 +80,7 @@
           <i class="far fa-smile"></i>
           <input type="text" name="" value="" placeholder="Scrivi un messaggio" v-on:keyup="chatInputF($event)" v-model="chatInput">
           <i class="fas fa-microphone" v-if="chatInput.trim() == ''"></i>
-          <i class="fas fa-paper-plane" v-else></i>
+          <i class="fas fa-paper-plane" v-else @click="sendMessage"></i>
         </div>
       </div>
     </div>

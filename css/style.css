@@ -145,8 +145,7 @@ i {
  {
   color: white;
 }
-
-#lista-contatti .contatto .avatar{
+.avatar{
   width: 58px;
   height: 58px;
   margin: 0 10px;

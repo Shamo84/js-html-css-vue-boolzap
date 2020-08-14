@@ -136,6 +136,15 @@ var app = new Vue(
       showByClick: null,
       contactSearchInput: "",
       chatInput: "",
+      replies: [
+          "neanche morto",
+          "piuttosto mi butto dal balcone",
+          "non vedo l'ora di perdermelo",
+          "sei utile come la forchetta nella zuppa",
+          "se mio nonno avesse le rotelle sarebbe una carriola",
+          "mi hai fatto venire voglia di bere della cicuta",
+          "tutt'ad un tratto il suicidio mi sembra un'opzione plausibile"
+        ],
       contacts: [
         {
           name: "Michele",
@@ -356,25 +365,47 @@ var app = new Vue(
         setTimeout(() => this.showByClick = i, 1);
       },
       chatInputF(event){
-        if (event.keyCode == 13 && this.chatInput.trim() != '') {
-
+        if (event.keyCode == 13) {
+          this.sendMessage();
         }
       },
-      updateTimes(){
-        for (var i = 0; i < this.contacts.length; i++) {
-          var lastMessage = this.contacts[i].chat.length-1;
-          if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 24 ) {
-            this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("kk:mm");
-          } else if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 168 ) {
-            this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("dddd");
-          } else {
-            this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("D/M/YYYY");
-          }
+      sendMessage(){
+        if (this.chatInput.trim() != '') {
+          var newMessage = {
+            text: this.chatInput,
+            time: moment(),
+            sent: true
+          };
+          this.chatInput = "";
+          this.contacts[this.activeContact].chat.push(newMessage);
+          var active = this.activeContact;
+          this.updateLastContact(active);
+          setTimeout(() => this.getReply(active), 1000);
+        }
+      },
+      getReply(active){
+        var newReply = {
+          text: this.replies[Math.floor(Math.random() * 8)],
+          time: moment(),
+          sent: false
+        };
+        this.contacts[active].chat.push(newReply);
+      },
+      updateLastContact(i){
+        var lastMessage = this.contacts[i].chat.length-1;
+        if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 24 ) {
+          this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("kk:mm");
+        } else if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 168 ) {
+          this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("dddd");
+        } else {
+          this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("D/M/YYYY");
         }
       },
     },
     mounted() {
-      this.updateTimes();
+      for (var i = 0; i < this.contacts.length; i++) {
+        this.updateLastContact(i);
+      }
     }
 
   })
