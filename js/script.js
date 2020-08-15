@@ -6,126 +6,17 @@
 //           $(".chat-main.active").scrollTop(offsetMessage);
 //         }
 //       } else if ($(event.target).hasClass('fa-paper-plane')) {
-//         // INVIO MESSAGGIO AL CLICK SULL'AEROPLANINO
-//         sendMessage();
-//         getReply();
-//       } else if ($(event.target).closest(".contatto").hasClass("contatto")) {
-//           // MOSTRA CHAT, IMMAGINE E NOME DEL CONTATTO ACTIVE
-//         $(event.target).closest(".contatto").siblings().removeClass("active");
-//         $(event.target).closest(".contatto").addClass("active");
-//         var nomeContattoActive = $(event.target).closest(".contatto").find(".nome-contatto").text();
-//         var contattoID = $(event.target).closest(".contatto").children(".avatar").attr("userid");
-//         showContactChat(contattoID, nomeContattoActive);
-//       }
-//     }
-//   });
-//   // TOGGLE DELLE ICONE ALL'INPUT CHAT
-//   $("#chat-footer input").keyup(function(event) {
-//     if ($("#chat-footer input").val().length == 0) {
-//       $("#chat-footer .fas").removeClass("fa-paper-plane").addClass("fa-microphone")
-//     } else {
-//       $("#chat-footer .fas").addClass("fa-paper-plane").removeClass("fa-microphone")
-//     }
-//   });
-//   // INVIO MESSAGGIO CON INVIO DALL'INPUT
-//   $("#chat-footer input").keypress(function(event) {
-//     if (event.which == 13 && $(this).val() != "") {
-//       sendMessage();
-//       getReply();
-//     }
-//   });
-//
-// });
+
 
 //
 // // INVIO DEI MESSAGGI
-// function sendMessage() {
-//   var time = getUpdatedTime();
-//   $(".contatto.active").children("time").text(time);
-//   var chatTemplate = $("#template .user.message").clone();
-//   var message = $("#chat-footer input").val();
-//   chatTemplate.prepend(message);
-//   chatTemplate.children("time").text(time);
-//   $(".chat-main.active").append(chatTemplate);
-//   $(".chat-main.active").addClass("waiting-response");
-//     $("#chat-footer input").val("");
-//   $("#chat-footer .fas").addClass("fa-microphone").removeClass("fa-paper-plane");
+
 //   $(".chat-main.active").scrollTop($(".chat-main.active").prop("scrollHeight"));
-//   $(".contatto.active").prependTo("#lista-contatti");
-//   $(".contatto.active").addClass("waiting-response");
-//
-// }
-//
-// // RICEZIONE DELLA RISPOSTA
-// function getReply() {
-//   setTimeout(function() {
-//     var time = getUpdatedTime();
-//     var contactTemplate = $("#template .contact.message").clone();
-//     contactTemplate.prepend(rispostaFiccante());
-//     contactTemplate.children("time").text(time);
-//     $(".contatto.waiting-response").prependTo("#lista-contatti");
-//     $(".contatto.waiting-response").removeClass("waiting-response");
-//     $(".chat-main.waiting-response").append(contactTemplate);
-//     $(".chat-main.waiting-response").removeClass("waiting-response");
-//     $(".chat-main.active").scrollTop($(".chat-main.active").prop("scrollHeight"));
-//   }, 1000);
-// }
-//
-// // AGGIORNA L'ORARIO DELL'ULTIMO MESSAGGIO DI UN CONTATTO
-// function getUpdatedTime() {
-//   var newDate = new Date();
-//   var time = timeDigits(newDate.getHours()) + ":" + timeDigits(newDate.getMinutes());
-//   return time;
-// }
-//
-// // AGGIUNGI ZERI ALL'ORARIO SE NECESSARIO
-// function timeDigits(number) {
-//   if (number < 10) {
-//     number = "0" + number;
-//   }
-//   return number;
-// }
-//
-// // MOSTRA CHAT, IMMAGINE E NOME DEL CONTATTO CLICCATO
-// function showContactChat(userid, nomeContattoActive) {
-//   $(".chat-main.active").addClass("display-none").removeClass("active");
-//   $(".chat-main").eq(userid-1).addClass("active").removeClass("display-none");
-//   $("#foto-contatto").attr("class", "avatar + contatto-" + userid + "");
-//   $("#chat-header .nome-contatto").text(nomeContattoActive);
-// }
-//
-// // RISPOSTE RANDOM
-// function rispostaFiccante() {
-//   var arrayRisposte = [
-//     "neanche morto",
-//     "piuttosto mi butto dal balcone",
-//     "non vedo l'ora di perdermelo",
-//     "sei utile come la forchetta nella zuppa",
-//     "se mio nonno avesse le rotelle sarebbe una carriola",
-//     "mi hai fatto venire voglia di bere della cicuta",
-//     "tutt'ad un tratto il suicidio mi sembra un'opzione plausibile"
-//   ];
-//   var randomNum = Math.floor(Math.random() * 7);
-//   return arrayRisposte[randomNum];
-// }
-//
-// // RIORDINA CONTATTI IN BASE ALL'ORARIO DELL'ULTIMO MESSAGGIO
-// function riordinaContatti(newTime) {
-//   var timeContatto;
-//   var i = 0;
-//   newTime = parseInt(newTime.replace(":", ""));
-//   do {
-//     timeContatto = $(".contatto").eq(i).children("time").text();
-//     timeContatto = parseInt(timeContatto.replace(":", ""));
-//     if (newTime > timeContatto) {
-//       $(".contatto.active").insertBefore(".contatto:eq(" + i + ")");
-//       return;
-//     }
-//     i++;
-//   } while (i < $(".contatto").length);
-//   $(".contatto.active").appendTo("#lista-contatti");
-//   return;
-// }
+
+
+
+
+
 Vue.config.devtools = true;
 var app = new Vue(
   {
@@ -388,6 +279,8 @@ var app = new Vue(
           this.reorderContacts();
           setTimeout(() => this.getReply(), 1000);
         }
+        // this.$refs.chatMain.scrollTop(this.$refs.chatMain.prop("scrollHeight"));
+        this.$el.chatMain.scrollToTop()
       },
       getReply(){
         var newReply = {
@@ -441,6 +334,9 @@ var app = new Vue(
         this.updateLastChat(index);
         this.reorderContacts();
       },
+      scrollToTop () {
+        this.$el.scrollTop = 1000;
+      }
     },
     mounted() {
       for (var i = 0; i < this.contacts.length; i++) {
