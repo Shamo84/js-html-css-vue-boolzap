@@ -378,27 +378,47 @@ var app = new Vue(
           };
           this.chatInput = "";
           this.contacts[this.activeContact].chat.push(newMessage);
-          var active = this.activeContact;
-          this.updateLastContact(active);
-          setTimeout(() => this.getReply(active), 1000);
+          this.updateLastContact(this.activeContact);
+          this.reorderContacts();
+          setTimeout(() => this.getReply(0), 1000);
         }
       },
-      getReply(active){
+      getReply(zero){
         var newReply = {
           text: this.replies[Math.floor(Math.random() * 8)],
           time: moment(),
           sent: false
         };
-        this.contacts[active].chat.push(newReply);
+        this.contacts[zero].chat.push(newReply);
       },
       updateLastContact(i){
         var lastMessage = this.contacts[i].chat.length-1;
-        if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 24 ) {
+        if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 24) {
           this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("kk:mm");
-        } else if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 168 ) {
+        } else if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 48) {
+          this.contacts[i].lastContact = "Yesterday";
+        } else if (moment().diff(this.contacts[i].chat[lastMessage].time, 'hours') < 168) {
           this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("dddd");
         } else {
           this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("D/M/YYYY");
+        }
+      },
+      reorderContacts(){
+        var currentContact = this.contacts[this.activeContact];
+        this.contacts.splice(this.activeContact, 1);
+        trovato = false;
+        i = 0
+        do {
+          if (currentContact.chat[currentContact.chat.length - 1].time.isAfter(this.contacts[i].chat[this.contacts[i].chat.length - 1].time) ) {
+            this.contacts.splice(i, 0, currentContact);
+            this.activeContact = i;
+            trovato = true;
+          }
+          i++
+        } while (trovato == false && i < this.contacts.length);
+        if (trovato == false) {
+          this.contacts.push(currentContact);
+          this.activeContact = this.contacts.length - 1;
         }
       },
     },

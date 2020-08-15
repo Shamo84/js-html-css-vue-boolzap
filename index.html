@@ -42,7 +42,7 @@
           <input v-on:keyup="searchContacts" type="text" name="search" value="" placeholder="Cerca o inizia una nuova chat" v-model="contactSearchInput">
         </div>
         <div id="lista-contatti">
-          <div v-for="(contact, index) in contacts" v-if="contact.visible" class="contatto" @click="activeContact = index">
+          <div v-for="(contact, index) in contacts" v-if="contact.visible" :class="(activeContact == index) ? 'contatto active' : 'contatto'" @click="activeContact = index">
             <img class="avatar" v-bind:src="'img/' + contact.image" alt="contact image">
             <div class="info-contatto">
               <div class="nome-contatto">{{contact.name}}</div>
