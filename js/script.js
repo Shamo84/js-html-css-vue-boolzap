@@ -148,7 +148,7 @@ var app = new Vue(
       contacts: [
         {
           name: "Michele",
-          phrase: "viva la vida loca",
+          lastChat: "viva la vida loca",
           lastContact: null,
           image: "avatar_1.jpg",
           visible: true,
@@ -217,7 +217,7 @@ var app = new Vue(
         },
         {
           name: "Fabio",
-          phrase: "bevo il latte",
+          lastChat: "bevo il latte",
           lastContact: null,
           image: "avatar_2.jpg",
           visible: true,
@@ -236,7 +236,7 @@ var app = new Vue(
         },
         {
           name: "Samuele",
-          phrase: "W il rock n' roll",
+          lastChat: "W il rock n' roll",
           lastContact: null,
           image: "avatar_3.jpg",
           visible: true,
@@ -255,7 +255,7 @@ var app = new Vue(
         },
         {
           name: "Alessandro B",
-          phrase: "gioco alla play",
+          lastChat: "gioco alla play",
           lastContact: null,
           image: "avatar_4.jpg",
           visible: true,
@@ -274,7 +274,7 @@ var app = new Vue(
         },
         {
           name: "Alessandro L.",
-          phrase: "guardo la tele",
+          lastChat: "guardo la tele",
           lastContact: null,
           image: "avatar_5.jpg",
           visible: true,
@@ -293,7 +293,7 @@ var app = new Vue(
         },
         {
           name: "Claudia",
-          phrase: "rockin' it",
+          lastChat: "rockin' it",
           lastContact: null,
           image: "avatar_6.jpg",
           visible: true,
@@ -312,7 +312,7 @@ var app = new Vue(
         },
         {
           name: "Davide",
-          phrase: "federer vs djokovic",
+          lastChat: "federer vs djokovic",
           lastContact: null,
           image: "avatar_7.jpg",
           visible: true,
@@ -331,7 +331,7 @@ var app = new Vue(
         },
         {
           name: "Federico",
-          phrase: "ballando sotto le stelle",
+          lastChat: "ballando sotto le stelle",
           lastContact: null,
           image: "avatar_8.jpg",
           visible: true,
@@ -362,7 +362,12 @@ var app = new Vue(
         }
       },
       openPopup(i){
-        setTimeout(() => this.showByClick = i, 1);
+        if (this.showByClick == null) {
+          this.showByClick = i;
+        } else {
+          this.showByClick = null;
+        }
+        // setTimeout(() => this.showByClick = i, 1);
       },
       chatInputF(event){
         if (event.keyCode == 13) {
@@ -379,17 +384,19 @@ var app = new Vue(
           this.chatInput = "";
           this.contacts[this.activeContact].chat.push(newMessage);
           this.updateLastContact(this.activeContact);
+          this.updateLastChat(this.activeContact);
           this.reorderContacts();
-          setTimeout(() => this.getReply(0), 1000);
+          setTimeout(() => this.getReply(), 1000);
         }
       },
-      getReply(zero){
+      getReply(){
         var newReply = {
-          text: this.replies[Math.floor(Math.random() * 8)],
+          text: this.replies[Math.floor(Math.random() * 7)],
           time: moment(),
           sent: false
         };
-        this.contacts[zero].chat.push(newReply);
+        this.contacts[0].chat.push(newReply);
+        this.updateLastChat(0);
       },
       updateLastContact(i){
         var lastMessage = this.contacts[i].chat.length-1;
@@ -402,6 +409,13 @@ var app = new Vue(
         } else {
           this.contacts[i].lastContact = this.contacts[i].chat[lastMessage].time.format("D/M/YYYY");
         }
+      },
+      updateLastChat(i){
+        this.contacts[i].lastChat = this.contacts[i].chat[this.contacts[i].chat.length - 1].text.substring(0, 24);
+        if (this.contacts[i].chat[this.contacts[i].chat.length - 1].text.length >= 29) {
+          this.contacts[i].lastChat += "...";
+        }
+
       },
       reorderContacts(){
         var currentContact = this.contacts[this.activeContact];
@@ -421,10 +435,17 @@ var app = new Vue(
           this.activeContact = this.contacts.length - 1;
         }
       },
+      deleteMessage(index, i) {
+        this.contacts[index].chat.splice(i, 1);
+        this.updateLastContact(index);
+        this.updateLastChat(index);
+        this.reorderContacts();
+      },
     },
     mounted() {
       for (var i = 0; i < this.contacts.length; i++) {
         this.updateLastContact(i);
+        this.updateLastChat(i);
       }
     }
 

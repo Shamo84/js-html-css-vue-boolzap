@@ -12,7 +12,7 @@
   <title>Boolzap Vue</title>
 </head>
 <body>
-  <div id="app" @click="showByClick = null">
+  <div id="app" @click="openPopup">
     <!-- BACKGROUND -->
     <div id="top-background" class="background"></div>
     <div id="bottom-background" class="background"></div>
@@ -46,7 +46,7 @@
             <img class="avatar" v-bind:src="'img/' + contact.image" alt="contact image">
             <div class="info-contatto">
               <div class="nome-contatto">{{contact.name}}</div>
-              <div class="frase-contatto">{{contact.phrase}}</div>
+              <div class="frase-contatto">{{contact.lastChat}}</div>
             </div>
             <time>{{contact.lastContact}}</time>
           </div>
@@ -68,10 +68,10 @@
         </div>
         <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="activeContact == index">
           <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="showByHover = null" >{{message.text}}
-            <i class="fas fa-chevron-down" v-show="showByHover == i || showByClick == i" @click="openPopup(i)"></i>
+            <i class="fas fa-chevron-down" v-show="showByHover == i || showByClick == i" @click.stop="openPopup(i)"></i>
             <div class="message-menu" v-show="showByClick == i">
               <p class="message-info">info messaggio</p>
-              <p class="delete-message">cancella messaggio</p>
+              <p class="delete-message" @click="deleteMessage(index, i)">cancella messaggio</p>
             </div>
             <time>{{message.time.format("kk:mm")}}</time>
           </span>
