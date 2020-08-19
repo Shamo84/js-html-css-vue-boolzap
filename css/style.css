@@ -200,7 +200,7 @@ i {
 .info-contatto{
   flex-grow: 2;
   margin: 0 10px;
-
+  overflow: hidden;
 }
 .nome-contatto{
   font-size: 18px;
@@ -256,6 +256,10 @@ i {
 .chat-main span.contact {
   align-self: flex-start;
   background-color: white;
+}
+.chat-main p {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .chat-main span i {
   position: absolute;
