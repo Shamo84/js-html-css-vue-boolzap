@@ -151,7 +151,7 @@ var app = new Vue(
           ]
         },
         {
-          name: "Alessandro B",
+          name: "Alessandro B.",
           lastChat: "gioco alla play",
           lastContact: null,
           image: "avatar_4.jpg",
