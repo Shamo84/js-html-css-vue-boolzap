@@ -27,6 +27,12 @@ var app = new Vue(
       showByClick: null,
       contactSearchInput: "",
       chatInput: "",
+      popupPosition: null,
+      deletePopup: {
+        visible: false,
+        contactIndex: null,
+        messageIndex: null
+      },
       replies: [
           "neanche morto",
           "piuttosto mi butto dal balcone",
@@ -213,11 +219,6 @@ var app = new Vue(
               time: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: true
             },
-            {
-              text: "ciao cara",
-              time: moment('05-08-2020 20:17:00', "DD-MM-YYYY hh:mm:ss"),
-              sent: false
-            }
           ]
         },
         {
@@ -252,17 +253,29 @@ var app = new Vue(
           }
         }
       },
-      openPopup(i){
+      togglePopup(i){
         if (this.showByClick == null) {
           this.showByClick = i;
+          if (this.$el.querySelector(".message:nth-child(" + (i+1) +")").getBoundingClientRect().y > this.$el.querySelector(".chat-main").getBoundingClientRect().height - 60) {
+            if (this.contacts[this.activeContact].chat[i].sent) {
+              this.popupPosition = "bottom-right";
+            } else {
+              this.popupPosition = "bottom-left";
+            }
+          } else {
+            if (this.contacts[this.activeContact].chat[i].sent) {
+              this.popupPosition = "top-right";
+            } else {
+              this.popupPosition = "top-left";
+            }
+          }
         } else {
           this.showByClick = null;
         }
-        // setTimeout(() => this.showByClick = i, 1);
       },
-      chatInputF(event){
-        if (event.keyCode == 13) {
-          this.sendMessage();
+      closePopup(){
+        if (this.showByClick != null) {
+          this.showByClick = null;
         }
       },
       sendMessage(){
@@ -278,9 +291,8 @@ var app = new Vue(
           this.updateLastChat(this.activeContact);
           this.reorderContacts();
           setTimeout(() => this.getReply(), 1000);
+          setTimeout(() => this.scrollToEnd(), 1);
         }
-        // this.$refs.chatMain.scrollTop(this.$refs.chatMain.prop("scrollHeight"));
-        this.$el.chatMain.scrollToTop()
       },
       getReply(){
         var newReply = {
@@ -290,6 +302,7 @@ var app = new Vue(
         };
         this.contacts[0].chat.push(newReply);
         this.updateLastChat(0);
+        setTimeout(() => this.scrollToEnd(), 1);
       },
       updateLastContact(i){
         var lastMessage = this.contacts[i].chat.length-1;
@@ -304,11 +317,7 @@ var app = new Vue(
         }
       },
       updateLastChat(i){
-        this.contacts[i].lastChat = this.contacts[i].chat[this.contacts[i].chat.length - 1].text.substring(0, 24);
-        if (this.contacts[i].chat[this.contacts[i].chat.length - 1].text.length >= 29) {
-          this.contacts[i].lastChat += "...";
-        }
-
+        this.contacts[i].lastChat = this.contacts[i].chat[this.contacts[i].chat.length - 1].text;
       },
       reorderContacts(){
         var currentContact = this.contacts[this.activeContact];
@@ -316,7 +325,11 @@ var app = new Vue(
         trovato = false;
         i = 0
         do {
-          if (currentContact.chat[currentContact.chat.length - 1].time.isAfter(this.contacts[i].chat[this.contacts[i].chat.length - 1].time) ) {
+          if (currentContact.chat.length == 0) {
+            this.contacts.push(currentContact);
+            this.activeContact = this.contacts.length - 1;
+            trovato = true;
+          } else if (this.contacts[i].chat.length == 0 || currentContact.chat[currentContact.chat.length - 1].time.isAfter(this.contacts[i].chat[this.contacts[i].chat.length - 1].time) ) {
             this.contacts.splice(i, 0, currentContact);
             this.activeContact = i;
             trovato = true;
@@ -328,15 +341,22 @@ var app = new Vue(
           this.activeContact = this.contacts.length - 1;
         }
       },
+      // setTimeout(()=>this.moveChar(),1000);
       deleteMessage(index, i) {
         this.contacts[index].chat.splice(i, 1);
-        this.updateLastContact(index);
-        this.updateLastChat(index);
+        if (this.contacts[index].chat.length > 0) {
+          this.updateLastContact(index);
+          this.updateLastChat(index);
+        } else {
+          this.contacts[index].lastContact = null;
+          this.contacts[index].lastChat = null;
+        }
         this.reorderContacts();
       },
-      scrollToTop () {
-        this.$el.scrollTop = 1000;
-      }
+      scrollToEnd: function() {
+        var container = this.$el.querySelector(".chat-main");
+        container.scrollTop = container.scrollHeight;
+      },
     },
     mounted() {
       for (var i = 0; i < this.contacts.length; i++) {

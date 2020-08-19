@@ -17,6 +17,51 @@ i {
   cursor: pointer;
 }
 
+#deletePopup {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 3;
+}
+#deletePopup > div {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 170px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 4px 4px 24px gray;
+}
+#deletePopup h3 {
+  padding: 25px 25px;
+  font-weight: 500;
+}
+#deletePopup span {
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px 25px;
+  border-radius: 3px;
+}
+#deletePopup span:hover {
+  box-shadow: 2px 2px 8px #CCCCCC;
+}
+#deletePopup span:first-of-type {
+  color: #05cd51;
+  position: absolute;
+  right: 195px;
+  bottom: 24px;
+}
+#deletePopup span:last-child {
+  color: white;
+  background-color: #05cd51;
+  position: absolute;
+  right: 30px;
+  bottom: 24px;
+}
+
 /* BACKGROUND */
 #top-background {
   background-color: #00BFA5;
@@ -121,6 +166,7 @@ i {
   display: block;
   height: calc(100% - 201px);
   overflow-y: scroll;
+  overflow-x: inherit;
 
 }
 #lista-contatti .contatto {
@@ -154,6 +200,7 @@ i {
 .info-contatto{
   flex-grow: 2;
   margin: 0 10px;
+
 }
 .nome-contatto{
   font-size: 18px;
@@ -161,6 +208,9 @@ i {
 .frase-contatto{
   font-size: 16px;
   color: #caccd0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 #lista-contatti time{
   font-size: 13px;
@@ -197,7 +247,7 @@ i {
   border-radius: 10px;
   position: relative;
   margin: 5px 0;
-  max-width: 85%;
+  max-width: 65%;
 }
 .chat-main span.user {
   align-self: flex-end;
@@ -222,13 +272,23 @@ i {
 }
 .chat-main .message-menu {
   position: absolute;
-  right: -30px;
-  bottom: -125px;
+  right: 0;
+  bottom: -130px;
   background-color: white;
   margin-bottom: 20px;
   z-index: 2;
   border-radius: 5px;
   box-shadow: 2px 2px 6px grey;
+}
+.chat-main .top-left {
+  right: -125px;
+}
+.chat-main .bottom-right {
+  bottom: 40px;
+}
+.chat-main .bottom-left {
+  right: -125px;
+  bottom: 40px;
 }
 .chat-main .message-menu p {
   font-size: 14px;
@@ -262,6 +322,41 @@ i {
   align-items: center;
   justify-content: space-between;
 }
-.display-none {
-  display: none;
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.top-right-enter-active,
+.top-right-leave-active,
+.top-left-enter-active,
+.top-left-leave-active,
+.bottom-right-enter-active,
+.bottom-right-leave-active,
+.bottom-left-enter-active,
+.bottom-left-leave-active {
+  transition: all .3s ease;
+}
+.top-right-enter, .top-right-leave-to {
+  transform: translate(78px, -54px) scale(0);
+  opacity: 0.5;
+}
+.top-left-enter, .top-left-leave-to {
+  transform: translate(-78px, -54px) scale(0);
+  opacity: 0.5;
+}
+.bottom-right-enter, .bottom-right-leave-to {
+  transform: translate(78px, 54px) scale(0);
+  opacity: 0.5;
+}
+.bottom-left-enter, .bottom-left-leave-to {
+  transform: translate(-78px, 54px) scale(0);
+  opacity: 0.5;
+}
+.chevron-enter-active,
+.chevron-leave-active {
+  transition: all .1s ease;
+}
+.chevron-enter,
+.chevron-leave-to {
+  transform: translateX(30px);
+  opacity: 0.2;
 }

@@ -12,7 +12,14 @@
   <title>Boolzap Vue</title>
 </head>
 <body>
-  <div id="app" @click="openPopup">
+  <div id="app" @click="closePopup">
+    <div id="deletePopup" v-if="deletePopup.visible">
+      <div>
+        <h3>Eliminare Messaggio?</h3>
+        <span @click="deletePopup.visible = false">ANNULLA</span>
+        <span @click="deleteMessage(deletePopup.contactIndex, deletePopup.messageIndex), deletePopup.visible = false">ELIMINA PER ME</span>
+      </div>
+    </div>
     <!-- BACKGROUND -->
     <div id="top-background" class="background"></div>
     <div id="bottom-background" class="background"></div>
@@ -58,7 +65,7 @@
           <img class="avatar" v-bind:src="'img/' + contacts[activeContact].image" alt="contact image">
           <div class="info-contatto">
             <div class="nome-contatto">{{contacts[activeContact].name}}</div>
-            <div class="frase-contatto">Ultimo accesso oggi alle <time>{{contacts[activeContact].chat[contacts[activeContact].chat.length-1].time.format("kk:mm")}}</time></div>
+            <div class="frase-contatto" v-if="contacts[activeContact].chat.length > 0">Ultimo accesso oggi alle <time>{{contacts[activeContact].chat[contacts[activeContact].chat.length-1].time.format("kk:mm")}}</time></div>
           </div>
           <div class="icons">
             <i class="fas fa-search"></i>
@@ -66,19 +73,24 @@
             <i class="fas fa-ellipsis-v"></i>
           </div>
         </div>
-        <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="activeContact == index" ref="chatMain">
-          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="showByHover = null" >{{message.text}}
-            <i class="fas fa-chevron-down" v-show="showByHover == i || showByClick == i" @click.stop="openPopup(i)"></i>
-            <div class="message-menu" v-show="showByClick == i">
-              <p class="message-info">info messaggio</p>
-              <p class="delete-message" @click="deleteMessage(index, i)">cancella messaggio</p>
-            </div>
+        <div class="chat-main flex active" v-for="(contact, index) in contacts" v-if="activeContact == index">
+          <span :class="(message.sent) ? 'user message' : 'contact message'" v-for="(message, i) in contact.chat" @mouseover="showByHover = i" @mouseout="showByHover = null" >
+            <p>{{message.text}}</p>
+            <transition name="chevron">
+              <i class="fas fa-chevron-down" v-show="showByHover == i || showByClick == i" @click.stop="togglePopup(i)"></i>
+            </transition>
+            <transition :name="popupPosition">
+              <div :class="'message-menu ' + popupPosition" v-show="showByClick == i">
+                <p class="message-info">info messaggio</p>
+                <p class="delete-message" @click="deletePopup.visible = true, deletePopup.contactIndex = index, deletePopup.messageIndex = i">cancella messaggio</p>
+              </div>
+            </transition>
             <time>{{message.time.format("kk:mm")}}</time>
           </span>
         </div>
         <div id="chat-footer" class="flex">
           <i class="far fa-smile"></i>
-          <input type="text" name="" value="" placeholder="Scrivi un messaggio" v-on:keyup="chatInputF($event)" v-model="chatInput">
+          <input type="text" name="" value="" placeholder="Scrivi un messaggio" v-on:keyup.enter="sendMessage" v-model="chatInput">
           <i class="fas fa-microphone" v-if="chatInput.trim() == ''"></i>
           <i class="fas fa-paper-plane" v-else @click="sendMessage"></i>
         </div>
