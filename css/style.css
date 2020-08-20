@@ -207,14 +207,14 @@ i {
 }
 .frase-contatto{
   font-size: 16px;
-  color: #caccd0;
+  color: #bbbbbb;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 #lista-contatti time{
   font-size: 13px;
-  color: #dfe2e4;
+  color: #bbbbbb;
   position: relative;
   top: -10px;
 }
@@ -293,7 +293,7 @@ i {
   right: 6px;
   bottom: 6px;
   font-size: 10px;
-  color: #cacaca;
+  color: #bbbbbb;
 }
 .chat-main .message-menu {
   position: absolute;
