@@ -17,7 +17,7 @@
       <div>
         <h3>Eliminare Messaggio?</h3>
         <span @click="deletePopup.visible = false">ANNULLA</span>
-        <span @click="deleteMessage(deletePopup.contactIndex, deletePopup.messageIndex), deletePopup.visible = false">ELIMINA PER ME</span>
+        <span @click="deleteMessage(activeContact, deletePopup.messageIndex), deletePopup.visible = false">ELIMINA PER ME</span>
       </div>
     </div>
     <!-- BACKGROUND -->
@@ -82,7 +82,7 @@
             <transition :name="popupPosition">
               <div :class="'message-menu ' + popupPosition" v-show="showByClick == i">
                 <p class="message-info">info messaggio</p>
-                <p class="delete-message" @click="deletePopup.visible = true, deletePopup.contactIndex = index, deletePopup.messageIndex = i">cancella messaggio</p>
+                <p class="delete-message" @click="deletePopup.visible = true, deletePopup.messageIndex = i">cancella messaggio</p>
               </div>
             </transition>
             <time>{{message.time.format("kk:mm")}}</time>

@@ -30,7 +30,6 @@ var app = new Vue(
       popupPosition: null,
       deletePopup: {
         visible: false,
-        contactIndex: null,
         messageIndex: null
       },
       replies: [
@@ -92,24 +91,43 @@ var app = new Vue(
             },
             {
               text: "pensa che ieri ho giocato 700€ alle macchinette",
-              time: moment('13-08-2020 20:20:00', "DD-MM-YYYY hh:mm:ss"),
+              time: moment().subtract(2, 'hours'),
               sent: true
             },
             {
               text: "e hai vinto qualcosa?",
-              time: moment('13-08-2020 20:25:00', "DD-MM-YYYY hh:mm:ss"),
+              time: moment().subtract(2, 'hours'),
               sent: false
             },
             {
               text: "ma figurati!",
-              time: moment('13-08-2020 20:27:00', "DD-MM-YYYY hh:mm:ss"),
+              time: moment().subtract(2, 'hours'),
               sent: true
             },
             {
               text: ":D",
-              time: moment('13-08-2020 20:27:30', "DD-MM-YYYY hh:mm:ss"),
+              time: moment().subtract(2, 'hours'),
               sent: false
             },
+          ]
+        },
+        {
+          name: "Alessandro L.",
+          lastChat: "guardo la tele",
+          lastContact: null,
+          image: "avatar_5.jpg",
+          visible: true,
+          chat: [
+            {
+              text: "ciao alessandro",
+              time: moment().subtract(2, 'days'),
+              sent: true
+            },
+            {
+              text: "ciao cara",
+              time: moment().subtract(2, 'days'),
+              sent: false
+            }
           ]
         },
         {
@@ -165,25 +183,6 @@ var app = new Vue(
             {
               text: "ciao cara",
               time: moment('09-08-2020 10:17:00', "DD-MM-YYYY hh:mm:ss"),
-              sent: false
-            }
-          ]
-        },
-        {
-          name: "Alessandro L.",
-          lastChat: "guardo la tele",
-          lastContact: null,
-          image: "avatar_5.jpg",
-          visible: true,
-          chat: [
-            {
-              text: "ciao alessandro",
-              time: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss"),
-              sent: true
-            },
-            {
-              text: "ciao cara",
-              time: moment('09-08-2020 08:17:00', "DD-MM-YYYY hh:mm:ss"),
               sent: false
             }
           ]
