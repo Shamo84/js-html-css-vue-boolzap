@@ -1,22 +1,3 @@
-
-//         var positionTop = $(event.target).parent(".message").position().top;
-//         // SE IL DROPDOWN SBORDA ABBASSA UN PO LA SCROLL BAR
-//         if (positionTop > $(".chat-main.active").height() + 10) {
-//           var offsetMessage = $(event.target).parent(".message").prop("offsetTop") - 600;
-//           $(".chat-main.active").scrollTop(offsetMessage);
-//         }
-//       } else if ($(event.target).hasClass('fa-paper-plane')) {
-
-
-//
-// // INVIO DEI MESSAGGI
-
-//   $(".chat-main.active").scrollTop($(".chat-main.active").prop("scrollHeight"));
-
-
-
-
-
 Vue.config.devtools = true;
 var app = new Vue(
   {
