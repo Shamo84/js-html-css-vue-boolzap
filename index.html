@@ -13,13 +13,17 @@
 </head>
 <body>
   <div id="app" @click="closePopup">
-    <div id="deletePopup" v-if="deletePopup.visible">
-      <div>
-        <h3>Eliminare Messaggio?</h3>
-        <span @click="deletePopup.visible = false">ANNULLA</span>
-        <span @click="deleteMessage(activeContact, deletePopup.messageIndex), deletePopup.visible = false">ELIMINA PER ME</span>
+    <transition name="whiteDissipation">
+      <div id="deletePopup" v-if="deletePopup.parent">
+        <transition name="closePopupTrans" @after-leave="deletePopup.parent = false">
+          <div v-if="deletePopup.child">
+            <h3>Eliminare Messaggio?</h3>
+            <span @click="deletePopup.child = false">ANNULLA</span>
+            <span @click="deleteMessage(activeContact, deletePopup.messageIndex), deletePopup.child = false">ELIMINA PER ME</span>
+          </div>
+        </transition>
       </div>
-    </div>
+    </transition>
     <!-- BACKGROUND -->
     <div id="top-background" class="background"></div>
     <div id="bottom-background" class="background"></div>
@@ -82,7 +86,7 @@
             <transition :name="popupPosition">
               <div :class="'message-menu ' + popupPosition" v-show="showByClick == i">
                 <p class="message-info">info messaggio</p>
-                <p class="delete-message" @click="deletePopup.visible = true, deletePopup.messageIndex = i">cancella messaggio</p>
+                <p class="delete-message" @click="deletePopup.parent = true, deletePopup.child = true, deletePopup.messageIndex = i">cancella messaggio</p>
               </div>
             </transition>
             <time>{{message.time.format("kk:mm")}}</time>

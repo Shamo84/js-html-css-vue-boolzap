@@ -385,3 +385,19 @@ i {
   transform: translateX(30px);
   opacity: 0.2;
 }
+
+.whiteDissipation-leave-active {
+  transition: all 0.1s linear;
+}
+.whiteDissipation-leave-to {
+  opacity: 0;
+}
+
+.closePopupTrans-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.closePopupTrans-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0) !important;
+}

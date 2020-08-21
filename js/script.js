@@ -10,7 +10,8 @@ var app = new Vue(
       chatInput: "",
       popupPosition: null,
       deletePopup: {
-        visible: false,
+        parent: false,
+        child: false,
         messageIndex: null
       },
       replies: [
